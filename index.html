@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090711"><title>ZEUS SHOP</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#090711;--panel:#151020;--line:#302044;--purple:#a855f7;--pink:#d946ef;--muted:#a69ab8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -10%,#44206a 0,transparent 40%),var(--bg);color:#fff;font-family:Tahoma,Arial,sans-serif}.app{max-width:520px;margin:auto;min-height:100vh;padding:18px 16px calc(105px + env(safe-area-inset-bottom))}
+header{display:flex;justify-content:space-between;align-items:center;padding:8px 2px 22px}.brand{font-weight:900;letter-spacing:2px;font-size:22px}.brand b{color:#c084fc}.avatar{border:1px solid #593579;border-radius:14px;padding:10px;background:#1c1329}
+.hero{border:1px solid #63368b;border-radius:24px;padding:22px;background:linear-gradient(135deg,#31134d,#171020 70%);box-shadow:0 12px 40px #8b2be533;position:relative;overflow:hidden}.eyebrow{color:#d8b4fe;font-size:12px}.hero h1{font-size:24px;margin:10px 0}.hero p{color:#d0c4dc;font-size:13px;line-height:1.9;margin:0}.section{display:flex;justify-content:space-between;align-items:center;margin:25px 2px 13px}.section h2{font-size:17px;margin:0}.section span{font-size:11px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:linear-gradient(150deg,#1d1529,#100d18);border:1px solid var(--line);border-radius:18px;padding:14px;min-height:150px;display:flex;flex-direction:column}.icon{width:40px;height:40px;border-radius:13px;background:#8b35c52c;display:grid;place-items:center;font-size:21px;margin-bottom:11px}.card h3{font-size:13px;margin:0 0 6px;line-height:1.7}.card p{font-size:11px;color:var(--muted);margin:0 0 12px;line-height:1.7}.price{font-size:12px;color:#e9d5ff;margin-top:auto;margin-bottom:10px;font-weight:bold}.card button,.primary{border:0;background:linear-gradient(90deg,#9333ea,#c026d3);color:white;border-radius:10px;padding:10px;font-weight:bold;font-family:inherit;cursor:pointer}.card button{width:100%;font-size:11px}.card button:disabled{opacity:.55}
+.notice{margin-top:18px;border:1px solid #332344;background:#130f1c;padding:13px;border-radius:14px;color:#cbbbdc;font-size:11px;line-height:1.9}.state{padding:22px;text-align:center;color:var(--muted);font-size:12px;grid-column:1/-1}.bar{position:fixed;bottom:0;left:0;right:0;margin:auto;max-width:520px;display:flex;justify-content:space-around;background:#100c18ed;backdrop-filter:blur(16px);border-top:1px solid #38234b;padding:12px 8px calc(12px + env(safe-area-inset-bottom));z-index:5}.bar button{background:none;border:0;color:#c5b5d6;font:11px Tahoma;cursor:pointer}.bar button.active{color:#d8b4fe}#toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:#291638;border:1px solid #8750b2;padding:11px 16px;border-radius:12px;display:none;font-size:12px;z-index:10;max-width:90%;text-align:center}.overlay{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;padding:20px;z-index:9}.dialog{width:100%;max-width:400px;background:#171020;border:1px solid #63368b;border-radius:20px;padding:20px;text-align:center}.dialog h3{margin-top:0}.dialog p{color:#cbbbdc;font-size:13px;line-height:1.9}.dialog .actions{display:flex;gap:9px}.dialog button{flex:1}.secondary{background:#292235;color:#ddd;border:1px solid #49385d;border-radius:10px;padding:10px;font-family:inherit}
+</style></head>
+<body><main class="app">
+<header><div class="brand">ZEUS <b>SHOP</b></div><div class="avatar">👤</div></header>
+<section class="hero"><div class="eyebrow">فروشگاه دیجیتال زئوس</div><h1>خرید سریع، ساده و مطمئن</h1><p>سرویس موردنظرت رو انتخاب کن؛ قیمت‌ها از محصولات فعال فروشگاه دریافت می‌شن.</p></section>
+<div class="section"><h2>دسته‌بندی خدمات</h2><span id="count">در حال دریافت محصولات…</span></div>
+<section class="grid" id="products"><div class="state">در حال بارگذاری فروشگاه…</div></section>
+<div class="notice">پس از انتخاب محصول، فاکتور در گفت‌وگوی ربات برای شما ارسال می‌شود. سپس رسید پرداخت را در همان گفت‌وگو بفرستید تا مانند قبل توسط مدیریت بررسی شود.</div>
+</main><nav class="bar"><button class="active" onclick="window.scrollTo({top:0,behavior:'smooth'})">⌂<br>خانه</button><button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">▦<br>سرویس‌ها</button><button onclick="toast('فاکتورهای شما در گفت‌وگوی ربات قابل پیگیری هستند')">☰<br>سفارش‌ها</button></nav>
+<div id="toast"></div><div class="overlay" id="overlay"><div class="dialog"><h3>تأیید سفارش</h3><p id="dialogText"></p><div class="actions"><button class="secondary" onclick="closeDialog()">بازگشت</button><button class="primary" id="confirmBtn">ساخت فاکتور</button></div></div></div>
+<script>
+let tg=window.Telegram?.WebApp;
+function initTelegramApp(){
+  tg=window.Telegram?.WebApp||tg;
+  if(tg){try{tg.ready();tg.expand();tg.setHeaderColor('#090711');tg.setBackgroundColor('#090711')}catch(e){}}
+}
+async function getTelegramInitData(){
+  for(let i=0;i<10;i++){
+    initTelegramApp();
+    if(tg&&typeof tg.initData==='string'&&tg.initData.length) return tg.initData;
+    await new Promise(resolve=>setTimeout(resolve,200));
+  }
+  return '';
+}
+initTelegramApp();
+window.addEventListener('load',initTelegramApp);
+let selected=null, products=[];
+const fmt=n=>Number(n).toLocaleString('en-US')+' تومان';
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(t){const x=document.getElementById('toast');x.textContent=t;x.style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>x.style.display='none',3000)}
+async function load(){const box=document.getElementById('products');try{const r=await fetch('/api/products',{cache:'no-store'});if(!r.ok)throw Error();const d=await r.json();products=d.products||[];document.getElementById('count').textContent=products.length+' محصول فعال';if(!products.length){box.innerHTML='<div class="state">فعلاً محصول فعالی وجود ندارد.</div>';return}box.innerHTML=products.map(p=>`<article class="card"><div class="icon">${esc(p.icon)}</div><h3>${esc(p.title)}</h3><p>${esc(p.service_title)}</p><div class="price">${fmt(p.price)}</div><button onclick="askOrder(${p.id})">انتخاب و خرید</button></article>`).join('')}catch(e){box.innerHTML='<div class="state">بارگذاری فروشگاه ناموفق بود. اتصال اینترنت را بررسی و دوباره تلاش کنید.</div>';document.getElementById('count').textContent='خطا'}}
+function askOrder(id){selected=products.find(p=>p.id===id);if(!selected)return;document.getElementById('dialogText').textContent=selected.title+' — '+fmt(selected.price)+'\nبا تأیید، فاکتور در ربات برای شما ساخته می‌شود.';document.getElementById('overlay').style.display='flex'}
+function closeDialog(){document.getElementById('overlay').style.display='none'}
+document.getElementById('confirmBtn').addEventListener('click',async()=>{if(!selected)return;const b=document.getElementById('confirmBtn');b.disabled=true;b.textContent='در حال ثبت…';try{const initData=await getTelegramInitData();
+if(!initData)throw Error('اطلاعات ورود تلگرام دریافت نشد. فروشگاه را با دکمه «ورود به فروشگاه» داخل گفت‌وگوی خصوصی ربات باز کنید؛ لینک را در مرورگر یا پیام فورواردشده باز نکنید.');
+const r=await fetch('/api/order',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product_id:selected.id,initData})});const d=await r.json();if(!r.ok||!d.ok)throw Error(d.error||'ثبت سفارش انجام نشد');closeDialog();toast('فاکتور '+d.invoice+' در گفت‌وگوی ربات ارسال شد');if(tg)tg.close()}catch(e){toast(e.message||'خطا در ثبت سفارش')}finally{b.disabled=false;b.textContent='ساخت فاکتور'}});
+load();
+</script></body></html>
